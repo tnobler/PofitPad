@@ -15,7 +15,7 @@ import { loadUser } from './actions/auth';
 import setAuthToken from './utils/setAuthToken';
 
 import './App.css';
-import { CreateProfile } from './components/profile-form/CreateProfile';
+import CreateProfile from './components/profile-form/CreateProfile';
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
