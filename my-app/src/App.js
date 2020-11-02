@@ -9,6 +9,8 @@ import Dashboard from './components/dashboard/Dashboard';
 import PrivateRoute from './components/routing/PrivateRoute';
 import CreateProfile from './components/profile-form/CreateProfile';
 import EditProfile from './components/profile-form/EditProfile';
+import Profiles from './components/profiles/Profiles';
+import Profile from './components/profile/Profile';
 
 // Redux
 import { Provider } from 'react-redux';
@@ -17,7 +19,6 @@ import { loadUser } from './actions/auth';
 import setAuthToken from './utils/setAuthToken';
 
 import './App.css';
-import Profiles from './components/profiles/Profiles';
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -40,6 +41,7 @@ const App = () => {
               <Route exact path='/login' component={Login} />
               <PrivateRoute exact path='/dashboard' component={Dashboard} />
               <PrivateRoute exact path='/profiles' component={Profiles} />
+              <PrivateRoute exact path='/profile/:id' component={Profile} />
               <PrivateRoute
                 exact
                 path='/create-profile'
