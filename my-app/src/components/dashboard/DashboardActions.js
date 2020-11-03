@@ -7,6 +7,9 @@ export const DashboardActions = () => {
       <Link to='/edit-profile' className='btn btn-light'>
         <i className='fas fa-user-circle text-primary'></i> Edit Profile
       </Link>
+      <Link to='/properties' className='btn btn-light'>
+        <i className='fas fa-home text-primary'></i> View Properties
+      </Link>
       <Link to='/add-property' className='btn btn-light'>
         <i className='fas fa-home text-primary'></i> Add Property
       </Link>

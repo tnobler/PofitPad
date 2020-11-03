@@ -11,6 +11,8 @@ import CreateProfile from './components/profile-form/CreateProfile';
 import EditProfile from './components/profile-form/EditProfile';
 import Profiles from './components/profiles/Profiles';
 import Profile from './components/profile/Profile';
+import Properties from './components/properties/Properties';
+import CreateProperty from './components/properties/CreateProperty';
 
 // Redux
 import { Provider } from 'react-redux';
@@ -51,6 +53,12 @@ const App = () => {
                 exact
                 path='/edit-profile'
                 component={EditProfile}
+              />
+              <PrivateRoute exact path='/properties' component={Properties} />
+              <PrivateRoute
+                exact
+                path='/add-property'
+                component={CreateProperty}
               />
             </Switch>
           </section>
