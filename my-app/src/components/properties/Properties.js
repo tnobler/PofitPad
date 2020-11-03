@@ -26,6 +26,7 @@ const Properties = ({ getProperties, property: { properties, loading } }) => {
         ) : (
           <Fragment>
             <h4>No Properties Found...</h4>
+            <br />
             <Link to='/add-property' className='btn btn-light'>
               <i className='fas fa-home text-primary'></i> Add Property
             </Link>

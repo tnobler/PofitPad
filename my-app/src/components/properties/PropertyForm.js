@@ -39,7 +39,7 @@ const PropertyForm = ({ submitAction, history }) => {
   const onSubmit = e => {
     e.preventDefault();
 
-    submitAction(formData);
+    submitAction(formData, history);
   };
 
   return (

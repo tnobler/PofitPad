@@ -37,6 +37,8 @@ export const addProperty = (formData, history) => async dispatch => {
     });
 
     dispatch(setAlert('Property Added', 'success'));
+
+    history.push('/properties');
   } catch (err) {
     console.error(err);
     const errors = err.response.data.errors;

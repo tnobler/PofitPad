@@ -5,10 +5,10 @@ import { connect } from 'react-redux';
 import { addProperty } from '../../actions/property';
 import PropertyForm from './PropertyForm';
 
-const CreateProperty = ({ addProperty }) => {
+const CreateProperty = ({ addProperty, history }) => {
   return (
     <Fragment>
-      <PropertyForm submitAction={addProperty} />
+      <PropertyForm submitAction={addProperty} history={history} />
     </Fragment>
   );
 };

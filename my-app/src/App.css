@@ -17,7 +17,7 @@ body {
   font-family: 'Raleway', sans-serif;
   font-size: 1rem;
   line-height: 1.6;
-  background-color: #f3f3f3;
+  background-color: #fff;
   color: #333;
 }
 
@@ -532,16 +532,70 @@ button {
   color: var(--dark-color);
 }
 
-.property-about {
-  grid-area: about;
-  text-align: center;
+/* propertyCard (Component) */
+.propertyCard {
+  background: var(--light-color);
+  margin: 0 0 20px;
+  padding: 20px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(38, 38, 38, 0.2);
+  cursor: pointer;
+  transition: 0.3s ease;
 }
 
-.property-about .skills {
+.propertyCard:hover {
+  /* box-shadow: 0 2px 4px rgba(#000, 0.2), 0 4px 8px rgba(#000, 0.2); */
+  transition: all 0.2s ease-out;
+  box-shadow: 0px 4px 8px rgba(38, 38, 38, 0.2);
+  top: -4px;
+  border: 1px solid #cccccc;
+  background-color: #f5f5f5;
+}
+
+.propertyCard:active {
+  box-shadow: none;
+  transform-origin: center;
+  border: 1px solid #cccccc;
+  transform: scale(0.98);
+}
+
+.propertyCard__date {
+  font-size: 0.5rem;
+}
+
+.propertyCard__address {
+  color: #666;
+  line-height: 1.5rem;
+  font-size: 0.875rem;
+}
+
+.propertyCard__details {
+  margin: 0 0 10px;
+  color: #444;
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.75rem;
+}
+
+.propertyCard__snapshot {
+}
+
+.propertyCard__property-stats {
+  font-size: 0.75rem;
+}
+
+.propertyCard-top {
   display: flex;
+  flex-direction: row;
   align-items: center;
-  justify-content: center;
-  text-align: center;
+  justify-items: start;
+  justify-content: space-between;
+}
+
+.propertyCard__submarket {
+  margin-top: 10px;
+  font-size: 1.25rem;
+  color: var(--primary-color);
 }
 
 /* Mobile Styles */
