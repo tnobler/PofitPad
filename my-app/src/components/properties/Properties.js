@@ -10,7 +10,7 @@ const Properties = ({ getProperties, property: { properties, loading } }) => {
   useEffect(() => {
     getProperties();
   }, [getProperties]);
-  return loading ? (
+  return loading || properties === null ? (
     <Spinner />
   ) : (
     <Fragment>

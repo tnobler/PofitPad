@@ -1,20 +1,14 @@
-import React, { useState, Fragment } from 'react';
-import { Link, withRouter } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import React, { Fragment } from 'react';
+
 import { connect } from 'react-redux';
-import { addProperty } from '../../actions/property';
 import PropertyForm from './PropertyForm';
 
-const CreateProperty = ({ addProperty, history }) => {
+const CreateProperty = ({ history }) => {
   return (
     <Fragment>
-      <PropertyForm submitAction={addProperty} history={history} />
+      <PropertyForm history={history} />
     </Fragment>
   );
 };
 
-CreateProperty.propTypes = {
-  addProperty: PropTypes.func.isRequired
-};
-
-export default connect(null, { addProperty })(CreateProperty);
+export default connect(null, {})(CreateProperty);

@@ -92,6 +92,10 @@ const PropertySchema = new mongoose.Schema({
       soldprice: {
         type: String,
         required: true
+      },
+      date: {
+        type: Date,
+        default: Date.now
       }
     }
   ],
@@ -121,6 +125,10 @@ const PropertySchema = new mongoose.Schema({
       },
       offerprice: {
         type: String
+      },
+      date: {
+        type: Date,
+        default: Date.now
       }
     }
   ],

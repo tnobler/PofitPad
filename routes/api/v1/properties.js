@@ -111,12 +111,12 @@ router.post(
   }
 );
 
-// @route    GET api/v1/properties/:id
+// @route    GET api/v1/properties/:propertyId
 // @desc     Get property by property ID
 // @access   Private
-router.get('/:id', auth, async (req, res) => {
+router.get('/:propertyId', auth, async (req, res) => {
   try {
-    const property = await Property.findById(req.params.id);
+    const property = await Property.findById(req.params.propertyId);
 
     if (!property) return res.status(400).json({ msg: 'Property not found' });
 
@@ -133,9 +133,9 @@ router.get('/:id', auth, async (req, res) => {
 // @route    DELETE api/v1/properties/:id
 // @desc     Delete property
 // @access   Private
-router.delete('/:id', auth, async (req, res) => {
+router.delete('/:propertyId', auth, async (req, res) => {
   try {
-    const property = await Property.findById(req.params.id);
+    const property = await Property.findById(req.params.propertyId);
 
     if (!property) return res.status(400).json({ msg: 'Property not found' });
 
@@ -156,12 +156,12 @@ router.delete('/:id', auth, async (req, res) => {
   }
 });
 
-// @route  PUT api/properties/:id/comp
+// @route  PUT api/v1/properties/:propertyId/comp
 // @desc   Add property comps
 // @access Private
 
 router.put(
-  '/:id/comp',
+  '/:propertyId/comp',
   [
     auth,
     [
@@ -213,7 +213,7 @@ router.put(
     };
 
     try {
-      const property = await Property.findById(req.params.id);
+      const property = await Property.findById(req.params.propertyId);
 
       property.comps.unshift(newComp);
 
@@ -227,18 +227,41 @@ router.put(
   }
 );
 
-// @route  DELETE api/properties/:id/comp/:comp_id
+// @route  GET api/v1/properties/:propertyId/comps
+// @desc   GET all comps for Property
+// @access Private
+
+router.get('/:propertyId/comps', auth, async (req, res) => {
+  try {
+    const property = await Property.findById(req.params.propertyId);
+
+    if (!property) {
+      return res.status(400).json({ msg: 'Cannot find Property' });
+    }
+
+    res.json(property.comps);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route  GET api/v1/properties/:propertyId/comps/:compId
+// @desc   GET Comp by compID
+// @access Private
+
+// @route  DELETE api/v1/properties/:propertyId/comps/:compId
 // @desc   Delete comp from Property
 // @access Private
 
-router.delete('/:id/comp/:comp_id', auth, async (req, res) => {
+router.delete('/:propertyId/comps/:compId', auth, async (req, res) => {
   try {
-    const property = await Property.findById(req.params.id);
+    const property = await Property.findById(req.params.propertyId);
 
     // Get remove index
     const removeIndex = property.comps
       .map(item => item.id)
-      .indexOf(req.params.comp_id);
+      .indexOf(req.params.compId);
 
     property.comps.splice(removeIndex, 1);
 
@@ -250,12 +273,12 @@ router.delete('/:id/comp/:comp_id', auth, async (req, res) => {
   }
 });
 
-// @route  PUT api/properties/:id/snapshot
-// @desc   Add property snapshots
+// @route  PUT api/properties/:propertyId/snapshot
+// @desc   Add property snapshot
 // @access Private
 
 router.put(
-  '/:id/snapshot',
+  '/:propertyId/snapshot',
   [
     auth,
     [
@@ -292,7 +315,7 @@ router.put(
     };
 
     try {
-      const property = await Property.findById(req.params.id);
+      const property = await Property.findById(req.params.propertyId);
 
       property.snapshots.unshift(newSnapshot);
 
@@ -306,18 +329,18 @@ router.put(
   }
 );
 
-// @route  DELETE api/properties/:id/snapshot/:snapshot_id
+// @route  DELETE api/properties/:propertyId/snapshot/:snapshotId
 // @desc   Delete snapshot from Property
 // @access Private
 
-router.delete('/:id/snapshot/:snapshot_id', auth, async (req, res) => {
+router.delete('/:propertyId/snapshot/:snapshotId', auth, async (req, res) => {
   try {
-    const property = await Property.findById(req.params.id);
+    const property = await Property.findById(req.params.propertyId);
 
     // Get remove index
     const removeIndex = property.snapshots
       .map(item => item.id)
-      .indexOf(req.params.snapshot_id);
+      .indexOf(req.params.snapshotId);
 
     property.snapshots.splice(removeIndex, 1);
 

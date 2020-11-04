@@ -13,6 +13,8 @@ import Profiles from './components/profiles/Profiles';
 import Profile from './components/profile/Profile';
 import Properties from './components/properties/Properties';
 import CreateProperty from './components/properties/CreateProperty';
+import Property from './components/property/Property';
+import AddComp from './components/comps/AddComp';
 
 // Redux
 import { Provider } from 'react-redux';
@@ -57,8 +59,18 @@ const App = () => {
               <PrivateRoute exact path='/properties' component={Properties} />
               <PrivateRoute
                 exact
+                path='/properties/:propertyId'
+                component={Property}
+              />
+              <PrivateRoute
+                exact
                 path='/add-property'
                 component={CreateProperty}
+              />
+              <PrivateRoute
+                exact
+                path='/properties/:propertyId/add-comp'
+                component={AddComp}
               />
             </Switch>
           </section>

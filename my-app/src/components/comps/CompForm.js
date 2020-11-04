@@ -2,9 +2,9 @@ import React, { useState, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { addProperty } from '../../actions/property';
+import { addComp } from '../../actions/property';
 
-const PropertyForm = ({ addProperty, history }) => {
+const CompForm = ({ addComp, history, propertyId }) => {
   const [formData, setFormData] = useState({
     streetnumber: '',
     streetname: '',
@@ -16,7 +16,7 @@ const PropertyForm = ({ addProperty, history }) => {
     lotsize: '',
     beds: '',
     baths: '',
-    askingprice: ''
+    soldprice: ''
   });
 
   const {
@@ -30,7 +30,7 @@ const PropertyForm = ({ addProperty, history }) => {
     lotsize,
     beds,
     baths,
-    askingprice
+    soldprice
   } = formData;
 
   const onChange = e =>
@@ -38,14 +38,15 @@ const PropertyForm = ({ addProperty, history }) => {
 
   const onSubmit = e => {
     e.preventDefault();
-    addProperty(formData, history);
+    addComp(propertyId, formData, history);
   };
 
   return (
     <Fragment>
-      <h1 className='large text-primary'>Add New Property</h1>
+      <h1 className='large text-primary'>Add New Comp</h1>
       <p className='lead'>
-        <i className='fas fa-user'></i> Add a new property to analyze and track.
+        <i className='fas fa-user'></i> Add a new comparable property to the
+        subject.
       </p>
 
       <small>* = required field</small>
@@ -158,18 +159,16 @@ const PropertyForm = ({ addProperty, history }) => {
         <div className='form-group'>
           <input
             type='text'
-            placeholder='Asking Price'
-            name='askingprice'
-            value={askingprice}
+            placeholder='* Sold Price'
+            name='soldprice'
+            value={soldprice}
             onChange={e => onChange(e)}
           />
-          <small className='form-text'>
-            How much does the seller want in order to sell?
-          </small>
+          <small className='form-text'>How much did this comp Sell for?</small>
         </div>
 
         <input type='submit' className='btn btn-primary my-1' />
-        <Link className='btn btn-light my-1' to='/dashboard'>
+        <Link className='btn btn-light my-1' to={`/properties/${propertyId}`}>
           Go Back
         </Link>
       </form>
@@ -177,8 +176,8 @@ const PropertyForm = ({ addProperty, history }) => {
   );
 };
 
-PropertyForm.propTypes = {
-  addProperty: PropTypes.func.isRequired
+CompForm.propTypes = {
+  addComp: PropTypes.func.isRequired
 };
 
-export default connect(null, { addProperty })(PropertyForm);
+export default connect(null, { addComp })(CompForm);

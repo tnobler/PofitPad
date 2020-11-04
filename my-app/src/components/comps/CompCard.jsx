@@ -4,8 +4,8 @@ import Moment from 'react-moment';
 import NumberFormat from 'react-number-format';
 import { useState } from 'react';
 
-const PropertyCard = ({
-  property: {
+const CompCard = ({
+  comp: {
     _id,
     streetnumber,
     streetname,
@@ -25,20 +25,20 @@ const PropertyCard = ({
   const [displaySnapshots, toggleSnapshots] = useState(false);
 
   return (
-    <div className='propertyCard'>
-      <div className='propertyCard-top'>
-        <div className='propertyCard__address'>
+    <div className='compCard'>
+      <div className='compCard-top'>
+        <div className='compCard__address'>
           {streetnumber} {streetname}
           <br />
           {city}, {state} {zipcode}
           <br />
-          <div className='propertyCard__submarket'>{submarket} Submarket</div>
-          <div className='propertyCard__date'>
+          <div className='compCard__submarket'>{submarket} Submarket</div>
+          <div className='compCard__date'>
             Created on <Moment format='DD/MM/YYYY'>{date}</Moment>
           </div>
         </div>
 
-        <div className='propertyCard__property-stats'>
+        <div className='compCard__property-stats'>
           Asking Price:{' '}
           <NumberFormat
             value={askingprice}
@@ -75,9 +75,7 @@ const PropertyCard = ({
             </div>
 
             {displaySnapshots ? (
-              <div className='propertyCard__snapshot'>
-                Snapshot 1 Snapshot 2
-              </div>
+              <div className='compCard__snapshot'>Snapshot 1 Snapshot 2</div>
             ) : (
               ''
             )}
@@ -85,7 +83,7 @@ const PropertyCard = ({
         </Fragment>
       ) : (
         <Fragment>
-          <div className='propertyCard__snapshot'>
+          <div className='compCard__snapshot'>
             <div>
               <Link to={`/properties/${_id}`} className='btn btn-primary my-1'>
                 View Property
@@ -104,6 +102,6 @@ const PropertyCard = ({
   );
 };
 
-PropertyCard.propTypes = {};
+CompCard.propTypes = {};
 
-export default PropertyCard;
+export default CompCard;
