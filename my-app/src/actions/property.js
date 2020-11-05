@@ -10,7 +10,10 @@ import {
   GET_COMPS,
   COMP_ERROR,
   CLEAR_COMPS,
-  REMOVE_COMP
+  REMOVE_COMP,
+  GET_SNAPSHOTS,
+  SNAPSHOT_ERROR,
+  REMOVE_SNAPSHOT
 } from './types';
 
 // Get current user's properties
@@ -120,7 +123,7 @@ export const addComp = (propertyId, formData, history) => async dispatch => {
 
 // Get all comps by propertyId
 export const getComps = propertyId => async dispatch => {
-  dispatch({ type: CLEAR_COMPS });
+  // dispatch({ type: CLEAR_COMPS });
   try {
     const res = await axios.get(`/api/v1/properties/${propertyId}/comps`);
 
@@ -169,7 +172,7 @@ export const addSnapshot = (
     };
 
     const res = await axios.put(
-      `/api/v1/properties/${propertyId}/comp`,
+      `/api/v1/properties/${propertyId}/snaphot`,
       formData,
       config
     );
@@ -179,7 +182,7 @@ export const addSnapshot = (
       payload: res.data
     });
 
-    dispatch(setAlert('Comparable Added', 'success'));
+    dispatch(setAlert('Snapshot Added', 'success'));
 
     history.push(`/properties/${propertyId}`);
   } catch (err) {
@@ -189,7 +192,7 @@ export const addSnapshot = (
       errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
     }
     dispatch({
-      type: PROPERTY_ERROR,
+      type: SNAPSHOT_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status }
     });
   }
@@ -197,17 +200,16 @@ export const addSnapshot = (
 
 // Get all snapshots by snapshotId
 export const getSnapshots = propertyId => async dispatch => {
-  dispatch({ type: CLEAR_COMPS });
   try {
-    const res = await axios.get(`/api/v1/properties/${propertyId}/comps`);
+    const res = await axios.get(`/api/v1/properties/${propertyId}/snapshots`);
 
     dispatch({
-      type: GET_COMPS,
+      type: GET_SNAPSHOTS,
       payload: res.data
     });
   } catch (err) {
     dispatch({
-      type: COMP_ERROR,
+      type: SNAPSHOT_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status }
     });
   }
@@ -221,15 +223,17 @@ export const deleteSnapshot = (propertyId, compId) => async dispatch => {
     await axios.delete(`/api/v1/properties/${propertyId}/comps/${compId}`);
 
     dispatch({
-      type: REMOVE_COMP,
+      type: REMOVE_SNAPSHOT,
       payload: compId
     });
 
     dispatch(setAlert('Comp Removed', 'success'));
   } catch (err) {
     dispatch({
-      type: COMP_ERROR,
+      type: SNAPSHOT_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status }
     });
   }
 };
+
+// Calculate

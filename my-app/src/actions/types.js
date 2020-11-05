@@ -23,3 +23,6 @@ export const GET_COMPS = 'GET_COMPS';
 export const COMP_ERROR = 'COMP_ERROR';
 export const CLEAR_COMPS = 'CLEAR_COMPS';
 export const REMOVE_COMP = 'REMOVE_COMP';
+export const GET_SNAPSHOTS = 'GET_SNAPSHOTS';
+export const SNAPSHOT_ERROR = 'SNAPSHOT_ERROR';
+export const REMOVE_SNAPSHOT = 'REMOVE_SNAPSHOT';

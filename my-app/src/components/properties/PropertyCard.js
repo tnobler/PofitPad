@@ -2,7 +2,6 @@ import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import Moment from 'react-moment';
 import NumberFormat from 'react-number-format';
-import { useState } from 'react';
 
 const PropertyCard = ({
   property: {
@@ -22,7 +21,7 @@ const PropertyCard = ({
   },
   propertyDetail
 }) => {
-  const [displaySnapshots, toggleSnapshots] = useState(false);
+  // const [displaySnapshots, toggleSnapshots] = useState(false);
 
   return (
     <div className='propertyCard'>
@@ -56,33 +55,7 @@ const PropertyCard = ({
       </div>
 
       {propertyDetail ? (
-        <Fragment>
-          <div className=''>
-            <div>
-              <button
-                type='button'
-                className='btn btn-primary'
-                onClick={() => toggleSnapshots(!displaySnapshots)}
-              >
-                View Snapshots
-              </button>
-              <Link
-                to={`/properties/${_id}/add-snapshot`}
-                className='btn btn-primary my-1'
-              >
-                Add Snapshot
-              </Link>
-            </div>
-
-            {displaySnapshots ? (
-              <div className='propertyCard__snapshot'>
-                Snapshot 1 Snapshot 2
-              </div>
-            ) : (
-              ''
-            )}
-          </div>
-        </Fragment>
+        <Fragment></Fragment>
       ) : (
         <Fragment>
           <div className='propertyCard__snapshot'>

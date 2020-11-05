@@ -46,6 +46,9 @@ const PropertySchema = new mongoose.Schema({
   askingprice: {
     type: String
   },
+  notes: {
+    type: String
+  },
   comps: [
     {
       mlsnumber: {
@@ -93,6 +96,9 @@ const PropertySchema = new mongoose.Schema({
         type: String,
         required: true
       },
+      notes: {
+        type: String
+      },
       date: {
         type: Date,
         default: Date.now
@@ -124,6 +130,9 @@ const PropertySchema = new mongoose.Schema({
         type: String
       },
       offerprice: {
+        type: String
+      },
+      notes: {
         type: String
       },
       date: {

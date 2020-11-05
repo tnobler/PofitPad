@@ -15,6 +15,7 @@ import Properties from './components/properties/Properties';
 import CreateProperty from './components/properties/CreateProperty';
 import Property from './components/property/Property';
 import AddComp from './components/comps/AddComp';
+import AddSnapshot from './components/snapshots/AddSnapshot';
 
 // Redux
 import { Provider } from 'react-redux';
@@ -71,6 +72,11 @@ const App = () => {
                 exact
                 path='/properties/:propertyId/add-comp'
                 component={AddComp}
+              />
+              <PrivateRoute
+                exact
+                path='/properties/:propertyId/add-snapshot'
+                component={AddSnapshot}
               />
             </Switch>
           </section>

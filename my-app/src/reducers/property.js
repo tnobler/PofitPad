@@ -8,16 +8,20 @@ import {
   GET_COMPS,
   COMP_ERROR,
   CLEAR_COMPS,
-  REMOVE_COMP
+  REMOVE_COMP,
+  GET_SNAPSHOTS,
+  SNAPSHOT_ERROR,
+  REMOVE_SNAPSHOT
 } from '../actions/types';
 
 const initialState = {
-  property: null,
+  property: {},
   properties: [],
   loading: true,
   error: {},
   propertyDetail: false,
-  comps: []
+  comps: [],
+  snapshots: []
 };
 
 const property = (state = initialState, action) => {
@@ -84,6 +88,26 @@ const property = (state = initialState, action) => {
       return {
         ...state,
         comps: state.comps.filter(comp => comp._id !== payload),
+        loading: false
+      };
+    case GET_SNAPSHOTS:
+      return {
+        ...state,
+        snapshots: payload,
+        loading: false
+      };
+
+    case SNAPSHOT_ERROR:
+      return {
+        ...state,
+        error: payload,
+        loading: false,
+        snapshots: null
+      };
+    case REMOVE_SNAPSHOT:
+      return {
+        ...state,
+        snapshots: state.snapshots.filter(snapshot => snapshot._id !== payload),
         loading: false
       };
 

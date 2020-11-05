@@ -329,6 +329,25 @@ router.put(
   }
 );
 
+// @route  GET api/v1/properties/:propertyId/snapshots
+// @desc   GET all snapshots for Property
+// @access Private
+
+router.get('/:propertyId/snapshots', auth, async (req, res) => {
+  try {
+    const property = await Property.findById(req.params.propertyId);
+
+    if (!property) {
+      return res.status(400).json({ msg: 'Cannot find Property' });
+    }
+
+    res.json(property.snapshots);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
 // @route  DELETE api/properties/:propertyId/snapshot/:snapshotId
 // @desc   Delete snapshot from Property
 // @access Private

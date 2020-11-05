@@ -7,6 +7,7 @@ import PropertyCard from '../properties/PropertyCard';
 // import Comps from './Comps';
 import Spinner from '../layout/Spinner';
 import Comps from '../comps/Comps';
+import Snapshots from '../snapshots/Snapshots';
 
 export const Property = ({
   getPropertyById,
@@ -15,6 +16,7 @@ export const Property = ({
 }) => {
   const propertyId = match.params.propertyId;
 
+  const [displaySnapshots, toggleSnapshots] = useState(false);
   const [displayComps, toggleComps] = useState(false);
 
   useEffect(() => {
@@ -27,6 +29,59 @@ export const Property = ({
       ) : (
         <Fragment>
           <PropertyCard property={property} propertyDetail={propertyDetail} />
+
+          <div className='propertyCard'>
+            {propertyDetail ? (
+              <Fragment>
+                <div className=''>
+                  <div>
+                    <button
+                      type='button'
+                      className='btn btn-primary'
+                      onClick={() => toggleSnapshots(!displaySnapshots)}
+                    >
+                      View Snapshots
+                    </button>
+                    <Link
+                      to={`/properties/${propertyId}/add-snapshot`}
+                      className='btn btn-primary my-1'
+                    >
+                      Add Snapshot
+                    </Link>
+                  </div>
+
+                  {displaySnapshots ? (
+                    <>
+                      <div className='compCard__snapshots'>
+                        <Snapshots propertyId={propertyId} />
+                      </div>
+                    </>
+                  ) : (
+                    ''
+                  )}
+                </div>
+              </Fragment>
+            ) : (
+              <Fragment>
+                <div className='propertyCard__snapshot'>
+                  <div>
+                    <Link
+                      to={`/properties/${propertyId}`}
+                      className='btn btn-primary my-1'
+                    >
+                      View Property
+                    </Link>
+                    <Link
+                      to={`/property/${propertyId}/snapshot`}
+                      className='btn btn-primary'
+                    >
+                      View Snapshots
+                    </Link>
+                  </div>
+                </div>
+              </Fragment>
+            )}
+          </div>
           <br />
           <div className='compCard'>
             <div className='compCard__links'>
