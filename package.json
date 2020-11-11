@@ -9,8 +9,8 @@
   "scripts": {
     "start": "node server",
     "server": "nodemon server",
-    "my-app": "npm start --prefix my-app",
-    "dev": "concurrently \"npm run server\" \"npm run my-app\"",
+    "my-app": "yarn start --prefix my-app",
+    "dev": "concurrently \"yarn run server\" \"yarn run my-app\"",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false yarn install --prefix my-app && yarn run build --prefix my-app"
   },
   "author": "Tanner Noble <tannernoble@gmail.com> (http://www.tannernoble.com)",
