@@ -44,7 +44,7 @@ const CompItem = ({
 
   return (
     <Fragment>
-      <div className='compCard__address'>
+      <div className='compCard'>
         <div className='compCard-top'>
           <div className='compCard__address'>
             {streetnumber} {streetname}
@@ -63,7 +63,7 @@ const CompItem = ({
                 onClick={() => {
                   handleDelete();
                 }}
-                className='px-1 delete'
+                className='btn btn-danger btn-snapshot'
               >
                 Delete Comp
               </button>
@@ -87,7 +87,6 @@ const CompItem = ({
           </div>
         </div>
       </div>
-      <hr />
     </Fragment>
   );
 };

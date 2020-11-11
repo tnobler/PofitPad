@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import Spinner from '../../components/layout/Spinner';
 import { getCurrentProfile, deleteAccount } from '../../actions/profile';
 import { DashboardActions } from './DashboardActions';
+// import QuickAddProperty from '../property/QuickAddProperty';
 
 const Dashboard = ({
   getCurrentProfile,
@@ -26,6 +27,7 @@ const Dashboard = ({
       {profile !== null ? (
         <Fragment>
           <DashboardActions />
+          {/* <QuickAddProperty /> */}
 
           <div className='my-2'>
             <button className='btn btn-danger' onClick={() => deleteAccount()}>

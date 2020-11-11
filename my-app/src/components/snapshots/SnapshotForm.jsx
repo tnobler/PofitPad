@@ -1,4 +1,4 @@
-import React, { useState, Fragment, useEffect, useCallback } from 'react';
+import React, { useState, Fragment, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -6,6 +6,11 @@ import { addSnapshot, getComps, getPropertyById } from '../../actions/property';
 import NumberFormat from 'react-number-format';
 import Spinner from '../layout/Spinner';
 import CurrencyInput from 'react-currency-input';
+
+// @todo maybe make 2 input fields:
+// arv $
+// arv $/ft
+// each calculates its own value || the other */ sqft
 
 const SnapshotForm = ({
   addSnapshot,
@@ -27,6 +32,12 @@ const SnapshotForm = ({
     notes: ''
   });
 
+  const [showOfferPrice, setShowOfferPrice] = useState(false);
+  const [displayNotes, toggleDisplayNotes] = useState(false);
+  const [customArv, toggleCustomArv] = useState(false);
+  // const [useSuggested, setUseSuggested] = useState(true);
+  const [activeButton, setActiveButton] = useState('$');
+
   const {
     title,
     description,
@@ -39,13 +50,79 @@ const SnapshotForm = ({
     notes
   } = formData;
 
-  const handleCalcOfferPrice = () => console.log('Handle Cacl Offer Price');
+  const logFormData = e => {
+    setFormData({
+      ...formData,
+      avgcompprice: calcAvgCompPrice
+    });
+    setFormData({
+      ...formData,
+      avgcomppriceperfoot: avgcomppriceperfoot
+    });
+    console.log(formData);
+  };
+
+  const handleSelectedButton = selectedButton => e => {
+    e.preventDefault();
+    console.log(selectedButton);
+    setActiveButton(selectedButton);
+  };
+
+  const handleCalcOfferPrice = e => {
+    e.preventDefault();
+    const numEstimatedRepairs = Number(
+      estimatedrepairs.replace(/[^0-9\.-]+/g, '')
+    );
+
+    const numSuggestedArv = Number(afterrepairvalue.replace(/[^0-9\.-]+/g, ''));
+
+    const numCustomArvPerSqft = Number(
+      afterrepairvalue.replace(/[^0-9\.-]+/g, '') * property.squarefeet
+    );
+
+    if (activeButton === '$') {
+      const calcSuggestedOfferPrice =
+        numSuggestedArv * (1 - Number(margin)) - numEstimatedRepairs;
+
+      setFormData({
+        ...formData,
+        offerprice: calcSuggestedOfferPrice.toString()
+      });
+
+      setShowOfferPrice(true);
+    } else {
+      const calcCustomOfferPrice =
+        numSuggestedArv * Number(property.squarefeet) * (1 - Number(margin)) -
+        numEstimatedRepairs;
+
+      setFormData({ ...formData, offerprice: calcCustomOfferPrice });
+
+      setShowOfferPrice(true);
+    }
+  };
 
   const onChange = e =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  const onChangeCurrency = e =>
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value.replace(/[^0-9\.-]+/g, '')
+    });
 
   const onSubmit = e => {
     e.preventDefault();
+    setFormData({
+      ...formData,
+      avgcompprice: calcAvgCompPrice
+    });
+    setFormData({
+      ...formData,
+      avgcomppriceperfoot: avgcomppriceperfoot
+    });
+
     addSnapshot(propertyId, formData, history);
   };
 
@@ -100,150 +177,156 @@ const SnapshotForm = ({
               </small>
             </div>
             <div className='form-group'>
-              <h1 className='compCard__property-stats'>Comps Sold Price</h1>
-              <ul className='compCard__property-stats'>
-                {comps.map((comp, i) => (
-                  <li className='' key={i}>
-                    {comp.streetnumber} {comp.streetname}:{' '}
-                    {
+              <h1 className='compCard__property-stats'>Comps Summary</h1>
+              <table>
+                <thead>
+                  <tr className='table th'>
+                    <th className='table th'>Address</th>
+                    <th className='table th'>Sold Price</th>
+                    <th className='table th'>Price/Sqft</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {comps.map((comp, i) => (
+                    <tr className='' key={i}>
+                      <td className='table-td'>
+                        {comp.streetnumber} {comp.streetname}:{' '}
+                      </td>
+                      <td className='table-td'>
+                        {
+                          <NumberFormat
+                            value={comp.soldprice}
+                            displayType={'text'}
+                            thousandSeparator={true}
+                            prefix={'$'}
+                            decimalScale={0}
+                          />
+                        }
+                      </td>
+                      <td className='table-td'>
+                        {
+                          <NumberFormat
+                            value={comp.soldprice / comp.squarefeet}
+                            displayType={'text'}
+                            thousandSeparator={true}
+                            prefix={'$'}
+                            decimalScale={0}
+                          />
+                        }
+                        /sqft
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+                <tfoot className='table-footer'>
+                  <tr>
+                    <td>Averages</td>
+                    <td className='table-footer__td'>
                       <NumberFormat
-                        value={comp.soldprice}
+                        value={calcAvgCompPrice()}
                         displayType={'text'}
                         thousandSeparator={true}
                         prefix={'$'}
                         decimalScale={0}
                       />
-                    }
-                  </li>
-                ))}
-              </ul>
-
-              <p>
-                <b>
-                  Average Comp Sold Price:{' '}
-                  <NumberFormat
-                    value={calcAvgCompPrice()}
-                    displayType={'text'}
-                    thousandSeparator={true}
-                    prefix={'$'}
-                    decimalScale={0}
-                  />
-                </b>
-              </p>
-
-              <CurrencyInput
-                type='text'
-                placeholder='Avg Comp Price'
-                name='avgcompprice'
-                value={avgcompprice}
-                onChangeEvent={e => onChange(e)}
-                prefix='$'
-                precision='0'
-              />
-              <small className='form-text'>
-                This is the Average of the Sold Prices of the Comps for this
-                Property (ex: Enter Number above ${calcAvgCompPrice().toFixed()}
-                ).
-              </small>
-            </div>
-
-            {/* /ft */}
-
-            <div className='form-group'>
-              <h1 className='compCard__property-stats'>Comps $/sqft</h1>
-              <ul className='compCard__property-stats'>
-                {comps.map((comp, i) => (
-                  <li className='' key={i}>
-                    {comp.streetnumber} {comp.streetname}:{' '}
-                    {
+                    </td>
+                    <td className='table-footer__td'>
                       <NumberFormat
-                        value={comp.soldprice / comp.squarefeet}
+                        value={calcAvgCompPrice() / calcAvgCompSquarefeet()}
                         displayType={'text'}
                         thousandSeparator={true}
                         prefix={'$'}
                         decimalScale={0}
                       />
-                    }
-                    /sqft
-                  </li>
-                ))}
-              </ul>
-
-              <p>
-                <b>
-                  Average Comp Sold Price/sqft:{' '}
-                  <NumberFormat
-                    value={calcAvgCompPrice() / calcAvgCompSquarefeet()}
-                    displayType={'text'}
-                    thousandSeparator={true}
-                    prefix={'$'}
-                    decimalScale={0}
-                  />
-                  /sqft
-                </b>
-              </p>
-
-              <CurrencyInput
-                type='text'
-                placeholder='Avg Comp Price/sqft'
-                name='avgcomppriceperfoot'
-                value={avgcomppriceperfoot}
-                onChangeEvent={e => onChange(e)}
-                prefix='$'
-                precision='0'
-              />
-              <small className='form-text'>
-                This is the Average of the Sold Prices/sqft of the Comps for
-                this Property (ex: Enter Number above $
-                {(calcAvgCompPrice() / calcAvgCompSquarefeet()).toFixed()}
-                ).
-              </small>
+                      /sqft
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
             </div>
 
             <div className='form-group'>
-              <p>
-                <b>ARV</b>
-                <br />
-                <b>
-                  Average Comp Sold Price/sqft * Subject Sqft:{' '}
-                  <NumberFormat
-                    value={
-                      property &&
-                      (calcAvgCompPrice() / calcAvgCompSquarefeet()) *
-                        property.squarefeet
-                    }
-                    displayType={'text'}
-                    thousandSeparator={true}
-                    prefix={'$'}
-                    decimalScale={0}
-                  />
-                </b>
-              </p>
+              <h1>Suggested ARV:</h1>
 
-              <CurrencyInput
-                type='text'
-                placeholder='* ARV'
-                name='afterrepairvalue'
-                value={afterrepairvalue}
-                onChangeEvent={e => onChange(e)}
-                prefix='$'
-                precision='0'
-              />
-              <small className='form-text'>
-                Enter the Expected After Repair Value. (Ex. Enter Number above $
-                {property &&
-                  (
+              <h1>
+                <NumberFormat
+                  value={
+                    property &&
                     (calcAvgCompPrice() / calcAvgCompSquarefeet()) *
-                    property.squarefeet
-                  ).toFixed()}
-                )
-              </small>
+                      property.squarefeet
+                  }
+                  displayType={'text'}
+                  thousandSeparator={true}
+                  prefix={'$'}
+                  decimalScale={0}
+                />
+              </h1>
+
+              <button
+                type='button'
+                className='btn my-1'
+                onClick={() => {
+                  setFormData({
+                    ...formData,
+                    afterrepairvalue: (
+                      (calcAvgCompPrice() / calcAvgCompSquarefeet()) *
+                      property.squarefeet
+                    ).toFixed()
+                  });
+                }}
+              >
+                Use Suggested
+              </button>
+              <button
+                className='btn my-1'
+                type='button'
+                onClick={() => {
+                  toggleCustomArv(!customArv);
+                  // setUseSuggested(false);
+                }}
+              >
+                Customize ARV
+              </button>
+
+              {customArv && (
+                <Fragment>
+                  <CurrencyInput
+                    type='text'
+                    placeholder='* ARV'
+                    name='afterrepairvalue'
+                    value={afterrepairvalue}
+                    onChangeEvent={e => onChangeCurrency(e)}
+                    prefix='$'
+                    precision='0'
+                  />
+
+                  <div>
+                    {['$', '$/sqft'].map(key => (
+                      <button
+                        className={
+                          key === activeButton
+                            ? 'btn btn-selected my-1'
+                            : 'btn my-1'
+                        }
+                        type='button'
+                        key={key}
+                        onClick={handleSelectedButton(key)}
+                      >
+                        {key}
+                      </button>
+                    ))}
+                  </div>
+                </Fragment>
+              )}
             </div>
 
             <div className='form-group'>
+              <p>
+                <b>Expected Margin</b>
+              </p>
               <input
                 type='text'
-                placeholder='* Expected Margin'
+                placeholder='* Expected Margin (as Decimal Ex .25)'
                 name='margin'
                 value={margin}
                 onChange={e => onChange(e)}
@@ -254,12 +337,15 @@ const SnapshotForm = ({
             </div>
 
             <div className='form-group'>
+              <p>
+                <b>Estimated Repairs</b>
+              </p>
               <CurrencyInput
-                type='text'
+                inputType='text'
                 placeholder='* Estimated Repairs'
                 name='estimatedrepairs'
                 value={estimatedrepairs}
-                onChangeEvent={e => onChange(e)}
+                onChangeEvent={e => onChangeCurrency(e)}
                 prefix='$'
                 precision='0'
               />
@@ -267,14 +353,73 @@ const SnapshotForm = ({
                 Enter the total amount of repairs needed. (Ex. $15,000)
               </small>
             </div>
+
             <div>
-              <button type='button' onClick={handleCalcOfferPrice()}>
+              <button
+                className='btn my-1'
+                type='button'
+                onClick={() => {
+                  toggleDisplayNotes(!displayNotes);
+                }}
+              >
+                Notes
+              </button>
+            </div>
+
+            <div>
+              {displayNotes && (
+                <Fragment>
+                  <div className='form-group'>
+                    <p>
+                      <b>Notes</b>
+                    </p>
+                    <textarea
+                      name='notes'
+                      placeholder='Add Notes Here'
+                      cols='30'
+                      rows='10'
+                      value={notes}
+                      onChange={e => onChange(e)}
+                    />
+                    <small className='form-text'>
+                      Enter the total amount of repairs needed. (Ex. $15,000)
+                    </small>
+                  </div>
+                </Fragment>
+              )}
+            </div>
+
+            <div>
+              {showOfferPrice && (
+                <Fragment>
+                  <h1 className='offerprice'>
+                    Offer Price:{' '}
+                    <NumberFormat
+                      value={offerprice}
+                      displayType={'text'}
+                      thousandSeparator={true}
+                      prefix={'$'}
+                      decimalScale={0}
+                    />
+                  </h1>
+                </Fragment>
+              )}
+            </div>
+
+            <div>
+              <button
+                className='btn my-1'
+                type='button'
+                onClick={e => {
+                  handleCalcOfferPrice(e);
+                }}
+              >
                 Calculate Offer Price
               </button>
             </div>
 
             <button type='submit' className='btn btn-primary my-1'>
-              Submit
+              Save Snapshot
             </button>
             <Link
               className='btn btn-light my-1'
@@ -285,6 +430,16 @@ const SnapshotForm = ({
           </form>
         </Fragment>
       )}
+      <div>
+        <button
+          type='button'
+          onClick={e => {
+            logFormData(e);
+          }}
+        >
+          Log FormData
+        </button>
+      </div>
     </Fragment>
   );
 };

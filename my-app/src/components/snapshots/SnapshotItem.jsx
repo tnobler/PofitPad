@@ -1,39 +1,40 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import { connect } from 'react-redux';
 import Moment from 'react-moment';
 import NumberFormat from 'react-number-format';
 import { Link } from 'react-router-dom';
-import { deleteComp } from '../../actions/property';
+import { deleteSnapshot } from '../../actions/property';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
 const SnapshotItem = ({
-  comp: {
+  snapshot: {
     _id,
-    streetnumber,
-    streetname,
-    city,
-    state,
-    zipcode,
-    submarket,
-    squarefeet,
-    lotsize,
-    beds,
-    baths,
-    soldprice,
+    title,
+    description,
+    avgcompprice,
+    avgcomppriceperfoot,
+    afterrepairvalue,
+    margin,
+    estimatedrepairs,
+    offerprice,
+    notes,
     date
   },
   propertyId,
-  deleteComp
+  deleteSnapshot
 }) => {
-  const handleDelete = () => {
+  const [showNotes, setShowNotes] = useState(false);
+
+  const handleDelete = e => {
+    e.preventDefault();
     confirmAlert({
       title: 'Confirm Delete',
-      message: 'Are you sure you want to delete this comp??',
+      message: 'Are you sure you want to delete this Snapshot??',
       buttons: [
         {
           label: 'Yes',
-          onClick: () => deleteComp(propertyId, _id)
+          onClick: () => deleteSnapshot(propertyId, _id)
         },
         {
           label: 'No'
@@ -42,56 +43,82 @@ const SnapshotItem = ({
     });
   };
 
+  const handleShowNotes = e => {
+    e.preventDefault();
+
+    setShowNotes(!showNotes);
+  };
+
   return (
     <Fragment>
-      <div className='compCard__address'>
-        <div className='compCard-top'>
-          <div className='compCard__address'>
-            {streetnumber} {streetname}
-            <br />
-            {city}, {state} {zipcode}
-            <br />
-            <div className='compCard__submarket'>{submarket} Submarket</div>
-            <div className='compCard__date'>
-              Comp Added <Moment format='DD/MM/YYYY'>{date}</Moment>
-            </div>
-            <div className='compCard__links'>
-              <Link to='#!' className='px-1'>
-                Edit Comp
-              </Link>
-              <button
-                onClick={() => {
-                  handleDelete();
-                }}
-                className='px-1 delete'
-              >
-                Delete Comp
-              </button>
-            </div>
-          </div>
+      <div className='snapCard'>
+        <div className='snapCard-top'>
+          <div className='snapCard__summary'>
+            <div className='snapCard__title'>{title}</div>
+            <div className='snapCard__description'>{description}</div>
 
-          <div className='compCard__property-stats'>
-            Sold Price:{' '}
-            <NumberFormat
-              value={soldprice}
-              displayType={'text'}
-              thousandSeparator={true}
-              prefix={'$'}
-            />
+            <div className='snapCard__offerprice'>
+              Offer Price:{' '}
+              <NumberFormat
+                value={offerprice}
+                displayType={'text'}
+                thousandSeparator={true}
+                prefix={'$'}
+                decimalScale={0}
+              />
+            </div>
+
+            {avgcompprice && <div>{avgcompprice}</div>}
+            {avgcomppriceperfoot && <div>{avgcomppriceperfoot}</div>}
             <br />
-            {beds} bed/{baths} bath
-            <br />
-            sqft: {squarefeet}
-            <br />
-            Lot size: {lotsize}
+            <div className='snapCard__assumptions'>
+              <div className='snapCard__assumptions-comps'>
+                <div>ARV: {afterrepairvalue}</div>
+                <div>Avg Comp Price: {avgcompprice}</div>
+                <div>Avg Comp $/sqft: {avgcomppriceperfoot}</div>
+              </div>
+
+              <div className='snapCard__assumptions-user'>
+                <div>Margin: {margin}</div>
+                <div>Estimated Repairs: {estimatedrepairs}</div>
+              </div>
+            </div>
           </div>
         </div>
+
+        <div className='snapCard__property-stats'>
+          <div className='snapCard__date'>
+            Snapshot Added <Moment format='DD/MM/YYYY'>{date}</Moment>
+          </div>
+
+          <div className='snapCard__notes'>
+            <button
+              className='btn btn-snapshot-notes'
+              onClick={e => {
+                handleShowNotes(e);
+              }}
+            >
+              Show Notes
+            </button>
+
+            {showNotes && <div>Notes: {notes}</div>}
+          </div>
+
+          <button
+            className='btn btn-danger btn-snapshot'
+            onClick={e => {
+              handleDelete(e);
+            }}
+          >
+            Delete Snapshot
+          </button>
+          <br />
+        </div>
       </div>
-      <hr />
     </Fragment>
   );
 };
 
 SnapshotItem.propTypes = {};
 
-export default connect(null, { deleteComp })(SnapshotItem);
+export default connect(null, { deleteSnapshot })(SnapshotItem);

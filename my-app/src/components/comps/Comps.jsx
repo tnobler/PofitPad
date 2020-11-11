@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
+
 import { getComps } from '../../actions/property';
 
 import Spinner from '../layout/Spinner';
@@ -10,7 +10,7 @@ import CompItem from './CompItem';
 const Comps = ({ property: { comps, loading }, getComps, propertyId }) => {
   useEffect(() => {
     getComps(propertyId);
-  }, [getComps]);
+  }, [getComps, propertyId]);
 
   return loading || comps === null ? (
     <Spinner />

@@ -9,7 +9,6 @@ import {
   UPDATE_PROPERTY,
   GET_COMPS,
   COMP_ERROR,
-  CLEAR_COMPS,
   REMOVE_COMP,
   GET_SNAPSHOTS,
   SNAPSHOT_ERROR,
@@ -172,7 +171,7 @@ export const addSnapshot = (
     };
 
     const res = await axios.put(
-      `/api/v1/properties/${propertyId}/snaphot`,
+      `/api/v1/properties/${propertyId}/snapshot`,
       formData,
       config
     );

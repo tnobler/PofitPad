@@ -1,7 +1,6 @@
 import React, { Fragment, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import { getSnapshots } from '../../actions/property';
 
 import Spinner from '../layout/Spinner';
@@ -14,7 +13,7 @@ const Snapshots = ({
 }) => {
   useEffect(() => {
     getSnapshots(propertyId);
-  }, [getSnapshots]);
+  }, [getSnapshots, propertyId]);
 
   return loading || snapshots === null ? (
     <Spinner />

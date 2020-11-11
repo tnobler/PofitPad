@@ -1,5 +1,4 @@
 import React, { Fragment } from 'react';
-
 import { connect } from 'react-redux';
 import CompForm from './CompForm';
 
@@ -12,9 +11,5 @@ const AddComp = ({ history, match }) => {
     </Fragment>
   );
 };
-
-AddComp.propTypes = {};
-
-// const mapStateToProps = state => ({});
 
 export default connect(null, {})(AddComp);

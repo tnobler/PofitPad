@@ -23,7 +23,16 @@ import store from './store';
 import { loadUser } from './actions/auth';
 import setAuthToken from './utils/setAuthToken';
 
+// Font Awesome
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { fal } from '@fortawesome/pro-light-svg-icons';
+import { far } from '@fortawesome/pro-regular-svg-icons';
+import { fas } from '@fortawesome/pro-solid-svg-icons';
+// import { ? } from '@fortawesome/pro-duotone-svg-icons'
+
 import './App.css';
+
+library.add(fal, far, fas);
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);

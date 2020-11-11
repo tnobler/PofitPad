@@ -64,7 +64,8 @@ const PropertyCard = ({
                 View Property
               </Link>
               <Link
-                to={`/property/${_id}/snapshot`}
+                // to={`/property/${_id}/snapshot`}
+                to={'#1'}
                 className='btn btn-primary'
               >
                 View Snapshots

@@ -1,30 +1,16 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import SnapshotForm from './SnapshotForm';
-import { getPropertyById } from '../../actions/property';
+import { addSnapshot } from '../../actions/property';
 
-const AddSnapshot = ({ history, match, property }) => {
+const AddSnapshot = ({ history, match }) => {
   const propertyId = match.params.propertyId;
-
-  useEffect(() => {
-    getPropertyById(propertyId);
-  }, [propertyId]);
 
   return (
     <Fragment>
-      <SnapshotForm
-        history={history}
-        propertyId={propertyId}
-        // property={property}
-      />
+      <SnapshotForm history={history} propertyId={propertyId} />
     </Fragment>
   );
 };
 
-AddSnapshot.propTypes = {};
-
-const mapStateToProps = state => ({
-  property: state.property
-});
-
-export default connect(mapStateToProps, { getPropertyById })(AddSnapshot);
+export default connect(null, { addSnapshot })(AddSnapshot);

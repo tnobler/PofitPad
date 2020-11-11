@@ -273,7 +273,7 @@ router.delete('/:propertyId/comps/:compId', auth, async (req, res) => {
   }
 });
 
-// @route  PUT api/properties/:propertyId/snapshot
+// @route  PUT api/v1/properties/:propertyId/snapshot
 // @desc   Add property snapshot
 // @access Private
 
@@ -300,7 +300,8 @@ router.put(
       afterrepairvalue,
       margin,
       estimatedrepairs,
-      offerprice
+      offerprice,
+      notes
     } = req.body;
 
     const newSnapshot = {
@@ -311,7 +312,8 @@ router.put(
       afterrepairvalue,
       margin,
       estimatedrepairs,
-      offerprice
+      offerprice,
+      notes
     };
 
     try {
@@ -352,7 +354,7 @@ router.get('/:propertyId/snapshots', auth, async (req, res) => {
 // @desc   Delete snapshot from Property
 // @access Private
 
-router.delete('/:propertyId/snapshot/:snapshotId', auth, async (req, res) => {
+router.delete('/:propertyId/snapshots/:snapshotId', auth, async (req, res) => {
   try {
     const property = await Property.findById(req.params.propertyId);
 
