@@ -1,7 +1,7 @@
 node_modules/
 config/default.json
 
+.env
 config/production.json
-my-app/.env
 
 misc
