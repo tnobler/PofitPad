@@ -2,6 +2,7 @@ node_modules/
 config/default.json
 
 .env
+my-app/.env
 config/production.json
 .env
 
