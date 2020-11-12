@@ -3,5 +3,6 @@ config/default.json
 
 .env
 config/production.json
+.env
 
 misc
