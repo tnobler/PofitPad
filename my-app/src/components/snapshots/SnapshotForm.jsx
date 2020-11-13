@@ -290,7 +290,7 @@ const SnapshotForm = ({
 
               {customArv && (
                 <Fragment>
-                  <CurrencyInput
+                  {/* <CurrencyInput
                     type='text'
                     placeholder='* ARV'
                     name='afterrepairvalue'
@@ -298,6 +298,13 @@ const SnapshotForm = ({
                     onChangeEvent={e => onChangeCurrency(e)}
                     prefix='$'
                     precision='0'
+                  /> */}
+                  <input
+                    type='text'
+                    placeholder='* ARV'
+                    name='afterrepairvalue'
+                    value={afterrepairvalue}
+                    onChange={e => onChange(e)}
                   />
 
                   <div>
@@ -340,7 +347,7 @@ const SnapshotForm = ({
               <p>
                 <b>Estimated Repairs</b>
               </p>
-              <CurrencyInput
+              {/* <CurrencyInput
                 inputType='text'
                 placeholder='* Estimated Repairs'
                 name='estimatedrepairs'
@@ -348,7 +355,16 @@ const SnapshotForm = ({
                 onChangeEvent={e => onChangeCurrency(e)}
                 prefix='$'
                 precision='0'
+              /> */}
+
+              <input
+                type='text'
+                placeholder='* Estimated Repairs'
+                name='estimatedrepairs'
+                value={estimatedrepairs}
+                onChange={e => onChange(e)}
               />
+
               <small className='form-text'>
                 Enter the total amount of repairs needed. (Ex. $15,000)
               </small>
