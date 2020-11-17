@@ -79,11 +79,11 @@ const CompItem = ({
               prefix={'$'}
             />
             <br />
-            {beds} bed/{baths} bath
+            $/sqft: ${(soldprice / squarefeet).toFixed(2)}
             <br />
             sqft: {squarefeet}
             <br />
-            Lot size: {lotsize}
+            {beds} bed/{baths} bath
           </div>
         </div>
       </div>
