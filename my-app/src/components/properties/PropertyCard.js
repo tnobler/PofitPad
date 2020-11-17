@@ -1,7 +1,8 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Moment from 'react-moment';
 import NumberFormat from 'react-number-format';
+import Snapshots from '../snapshots/Snapshots';
 
 const PropertyCard = ({
   property: {
@@ -21,7 +22,7 @@ const PropertyCard = ({
   },
   propertyDetail
 }) => {
-  // const [displaySnapshots, toggleSnapshots] = useState(false);
+  const [displaySnapshots, toggleSnapshots] = useState(false);
 
   return (
     <div className='propertyCard'>
@@ -63,14 +64,25 @@ const PropertyCard = ({
               <Link to={`/properties/${_id}`} className='btn btn-primary my-1'>
                 View Property
               </Link>
-              <Link
-                // to={`/property/${_id}/snapshot`}
-                to={'#1'}
+
+              <button
+                type='button'
                 className='btn btn-primary'
+                onClick={() => toggleSnapshots(!displaySnapshots)}
               >
                 View Snapshots
-              </Link>
+              </button>
             </div>
+
+            {displaySnapshots ? (
+              <>
+                <div className='compCard__snapshots'>
+                  <Snapshots propertyId={_id} />
+                </div>
+              </>
+            ) : (
+              ''
+            )}
           </div>
         </Fragment>
       )}

@@ -73,14 +73,59 @@ const SnapshotItem = ({
             <br />
             <div className='snapCard__assumptions'>
               <div className='snapCard__assumptions-comps'>
-                <div>ARV: {afterrepairvalue}</div>
-                <div>Avg Comp Price: {avgcompprice}</div>
-                <div>Avg Comp $/sqft: {avgcomppriceperfoot}</div>
+                <div>
+                  ARV:{' '}
+                  <NumberFormat
+                    value={afterrepairvalue}
+                    displayType={'text'}
+                    thousandSeparator={true}
+                    prefix={'$'}
+                    decimalScale={0}
+                  />
+                </div>
+                <div>
+                  Avg Comp Price:{' '}
+                  <NumberFormat
+                    value={avgcompprice}
+                    displayType={'text'}
+                    thousandSeparator={true}
+                    prefix={'$'}
+                    decimalScale={0}
+                  />
+                </div>
+                <div>
+                  Avg Comp $/sqft:{' '}
+                  <NumberFormat
+                    value={avgcomppriceperfoot}
+                    displayType={'text'}
+                    thousandSeparator={true}
+                    prefix={'$'}
+                    decimalScale={0}
+                  />
+                </div>
               </div>
 
               <div className='snapCard__assumptions-user'>
-                <div>Margin: {margin}</div>
-                <div>Estimated Repairs: {estimatedrepairs}</div>
+                <div>
+                  Margin:{' '}
+                  <NumberFormat
+                    value={margin * 100}
+                    displayType={'text'}
+                    thousandSeparator={true}
+                    suffix={'%'}
+                    decimalScale={2}
+                  />
+                </div>
+                <div>
+                  Estimated Repairs:{' '}
+                  <NumberFormat
+                    value={estimatedrepairs}
+                    displayType={'text'}
+                    thousandSeparator={true}
+                    prefix={'$'}
+                    decimalScale={0}
+                  />
+                </div>
               </div>
             </div>
           </div>
